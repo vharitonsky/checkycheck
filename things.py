@@ -30,6 +30,7 @@ class CheckResource(object):
        if os.path.exists(clean_page):        
            resp.status = falcon.HTTP_200
            resp.body = open(clean_page).read()
+           resp.content_type = 'text/html'
        else:
            resp.status = falcon.HTTP_404
            resp.body = "Not found"
