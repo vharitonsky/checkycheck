@@ -12,7 +12,7 @@ from pymongo import MongoClient
 mclient = MongoClient(os.environ['MONGODB_URI'])
 
 class AddResource(object):
-    def on_add(self, req, resp):
+    def on_get(self, req, resp):
         db = mclient['test-database']
         db.counter.insert({})
         resp.status = falcon.HTTP_200
