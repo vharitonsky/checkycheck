@@ -4,8 +4,11 @@
 import os
 import falcon
 import re
+import logging
 from pymongo import MongoClient
 
+
+log = logging.getLogger(__name__)
 
 # Falcon follows the REST architectural style, meaning (among
 # other things) that you think in terms of resources and state
@@ -17,6 +20,7 @@ class CheckResource(object):
     def get_page(self, req):
        page = req.get_param('page')
        clean_page = re.sub('^[a-zA-z]', '', page) + '.html'
+       log.info(clean_page)
        return clean_page
  
 
