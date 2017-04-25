@@ -19,7 +19,7 @@ class CheckResource(object):
 
     def get_page(self, req):
        page = req.get_param('page')
-       clean_page = re.sub('^[a-zA-z]', '', page) + '.html'
+       clean_page = re.sub('[^a-zA-z]', '', page) + '.html'
        log.info(clean_page)
        return clean_page
  
