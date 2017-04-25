@@ -3,17 +3,41 @@
 # Let's get this party started!
 import os
 import falcon
+import re
 from pymongo import MongoClient
 
 
 # Falcon follows the REST architectural style, meaning (among
 # other things) that you think in terms of resources and state
 # transitions, which map to HTTP verbs.
-mclient = MongoClient(os.environ['MONGODB_URI'])
+db = MongoClient(os.environ['MONGODB_URI'])[os.environ['MONGODB_URI'].split('/')[-1]]
+
+class CheckResource(object):
+
+    def get_page(self, req):
+       page = req.get_param('page')
+       clean_page = re.replace('^[a-zA-z]', '', page) + '.html'
+       return page
+ 
+
+    def on_get(self, req, resp):
+       clean_page = self.get_page(req)
+
+       if os.path.exists(clean_page):        
+           resp.status = falcon.HTTP_200
+           resp.body = open(clean_page).read()
+       else:
+           resp.status = falcon.HTTP_404
+           resp.body = "Not found"
+
+    def on_post(self, req, resp):
+        clean_page = self.get_page(req)
+        
+       
+
 
 class AddResource(object):
     def on_get(self, req, resp):
-        db = mclient['heroku_9lb7v9cf']
         db.counter.insert({})
         resp.status = falcon.HTTP_200
         resp.body = str(db.counter.count())
