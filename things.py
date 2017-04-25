@@ -13,7 +13,7 @@ mclient = MongoClient(os.environ['MONGODB_URI'])
 
 class AddResource(object):
     def on_get(self, req, resp):
-        db = mclient['test-database']
+        db = mclient['heroku_9lb7v9cf']
         db.counter.insert({})
         resp.status = falcon.HTTP_200
         resp.body = str(db.counter.count())
