@@ -17,7 +17,7 @@ class CheckResource(object):
     def get_page(self, req):
        page = req.get_param('page')
        clean_page = re.replace('^[a-zA-z]', '', page) + '.html'
-       return page
+       return clean_page
  
 
     def on_get(self, req, resp):
@@ -32,6 +32,18 @@ class CheckResource(object):
 
     def on_post(self, req, resp):
         clean_page = self.get_page(req)
+        product_id = req.get_param('product_id')
+        computer = req.get_param('comp')
+        moderator = req.get_param('moderator')
+        db.checks.replaceOne({
+            'product_id': product_id
+        }, {
+            'product_id': product_id, 
+            'computer': computer, 
+            'moderator': moderator
+        })
+        resp.status = falcon.HTTP_200
+        resp.body = 'OK'
         
        
 
@@ -53,11 +65,14 @@ class ThingsResource(object):
 
 # falcon.API instances are callable WSGI apps
 app = falcon.API()
+app.req_options.auto_parse_form_urlencoded = True
 
 # Resources are represented by long-lived class instances
 things = ThingsResource()
 add = AddResource()
+check = CheckResource()
 
 # things will handle all requests to the '/things' URL path
 app.add_route('/add', add)
 app.add_route('/things', things)
+app.add_route('/check', check)
