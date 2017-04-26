@@ -18,7 +18,7 @@ function approve(el) {
   formData.append('product_id', product_id);
   formData.append('computer', !!computer);
   formData.append('moderator', true);
-  fetch("/check", {
+  fetch(window.location.href, {
     method: "POST",
     body: formData
   });
@@ -32,7 +32,7 @@ function deny(el) {
   formData.append('product_id', product_id);
   formData.append('computer', !!computer);
   formData.append('moderator', false);
-  fetch("/check", {
+  fetch(window.location.href, {
     method: "POST",
     body: formData
   });
