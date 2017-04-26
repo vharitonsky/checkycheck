@@ -1,7 +1,7 @@
 window.onload = function () {
   var controls = '<div>' +
-      '<button value="Правильно" onclick="approve(this)" />' +
-      '<button value="Не правильно" onclick="deny(this)" />' +
+      '<button value="PRAVILNO" onclick="approve(this)" />' +
+      '<button value="NE PRAVILNO" onclick="deny(this)" />' +
   '</div>';
   var images = [].slice.call(document.querySelectorAll('img'));
   images.map(function (image) {

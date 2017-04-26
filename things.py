@@ -33,8 +33,7 @@ class CheckResource(object):
                 '<html>'
                 '<head> '
                 '<script type="text/javascript">%s</script>'
-                '</head>'
-                 % open('controls.js').read()
+                '</head>' % open('controls.js').read()
             ))
             resp.content_type = 'text/html'
         else:
