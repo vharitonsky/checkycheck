@@ -13,8 +13,10 @@ window.onload = function () {
 function approve(el) {
   var image = el.parentNode.previousSibling;
   var params = {product_id: image.getAttribute('data-product-id'),
-                computer: image.getAttribute('data-computer'),
                 moderator: true};
+  if (image.getAttribute('data-computer')){
+     params['computer'] = true;
+  }
   const searchParams = Object.keys(params).map(function (key){
   return encodeURIComponent(key) + '=' + encodeURIComponent(params[key]);
   }).join('&');
@@ -30,8 +32,10 @@ function approve(el) {
 
 function deny(el) {
   var image = el.parentNode.previousSibling;
-  var params = {product_id: image.getAttribute('data-product-id'),
-                computer: image.getAttribute('data-computer')};
+  var params = {product_id: image.getAttribute('data-product-id')};
+  if (image.getAttribute('data-computer')){
+     params['computer'] = true;
+  }
   const searchParams = Object.keys(params).map(function (key){
     return encodeURIComponent(key) + '=' + encodeURIComponent(params[key]);
   }).join('&');

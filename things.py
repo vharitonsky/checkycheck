@@ -30,14 +30,16 @@ class ShowResource(object):
         }).count()
         false_negative = db.checks.find({
             'computer': False,
-            'moderator': True,
+            'moderator': False,
         }).count()
+        accuracy = float(total)/((false_positive + false_negative) or 1)
         resp.status = falcon.HTTP_404
         resp.body = """
             Total: %s
             False Positive: %s
             False Negative: %s
-        """ % (total, false_positive, false_negative)
+            Accuracy: %s
+        """ % (total, false_positive, false_negative, accuracy)
 
 
 class CheckResource(object):
@@ -67,7 +69,7 @@ class CheckResource(object):
     def on_post(self, req, resp):
         clean_page = self.get_page(req)
         product_id = req.get_param('product_id')
-        computer = req.get_param('comp')
+        computer = bool(req.get_param('computer'))
         moderator = bool(req.get_param('moderator'))
         # db.checks.create_index('product_id')
         db.checks.replace_one({
