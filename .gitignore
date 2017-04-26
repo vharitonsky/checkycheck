@@ -1,0 +1,6 @@
+.vagga
+*.pyc
+*~
+.idea/*
+.cache
+*_secret.yaml
