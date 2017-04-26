@@ -32,7 +32,7 @@ class ShowResource(object):
             'computer': False,
             'moderator': False,
         }).count()
-        accuracy = float(total)/((false_positive + false_negative) or 1)
+        accuracy = float(total - (false_positive + false_negative))/total * 100
         resp.status = falcon.HTTP_404
         resp.body = """
             Total: %s
