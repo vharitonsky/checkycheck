@@ -11,7 +11,7 @@ window.onload = function () {
 };
 
 function approve(el) {
-  var image = el.parentNode.previousNode();
+  var image = el.parentNode.previousSibling;
   var product_id = image.getAttribute('data-product-id');
   var computer = image.getAttribute('data-computer');
   var formData = new FormData();
@@ -25,7 +25,7 @@ function approve(el) {
 }
 
 function deny(el) {
-  var image = el.parentNode.previousNode();
+  var image = el.parentNode.previousSibling;
   var product_id = image.getAttribute('data-product-id');
   var computer = image.getAttribute('data-computer');
   var formData = new FormData();
