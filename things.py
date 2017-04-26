@@ -45,7 +45,7 @@ class CheckResource(object):
         product_id = req.get_param('product_id')
         computer = req.get_param('comp')
         moderator = req.get_param('moderator')
-        db.checks.replaceOne({
+        db.checks.replace_one({
             'product_id': product_id
         }, {'product_id': product_id,
             'computer': computer, 
