@@ -6,7 +6,7 @@ window.onload = function () {
   images.map(function (image) {
       var node = document.createElement('div');
       node.innerHTML = controls;
-      document.body.insertChildAfter(image, node)
+      document.body.insertBefore(node, image.nextSibling)
   })
 };
 
