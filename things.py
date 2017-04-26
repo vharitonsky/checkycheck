@@ -29,12 +29,12 @@ class CheckResource(object):
 
         if os.path.exists(clean_page):
             resp.status = falcon.HTTP_200
-            resp.body = open(clean_page).read()
-            resp.body.replace('</html>', (
+            resp.body = open(clean_page).read().replace('<html>', (
+                '<html>'
                 '<head> '
                 '<script type="text/javascript">%s</script>'
                 '</head>'
-                '</html>' % open('controls.js').read()
+                 % open('controls.js').read()
             ))
             resp.content_type = 'text/html'
         else:
