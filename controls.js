@@ -1,12 +1,12 @@
 window.onload = function () {
-  var controls = '<button value="PRAVILNO" onclick="approve(this)" />' +
-      '<button value="NE PRAVILNO" onclick="deny(this)" />';
+  var controls = '<button onclick="approve(this)">PRAVILNO</button>' +
+      '<button onclick="deny(this)">NE PRAVILNO</button>';
 
   var images = [].slice.call(document.querySelectorAll('img'));
   images.map(function (image) {
       var node = document.createElement('div');
       node.innerHTML = controls;
-      image.parentNode.appendChild(node)
+      document.body.insertChildAfter(image, node)
   })
 };
 
