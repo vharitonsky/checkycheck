@@ -5,7 +5,7 @@ import os
 import falcon
 import re
 import logging
-from pymongo import MongoClient
+from pymongo import MongoClient, ASCENDING, DESCENDING
 
 
 log = logging.getLogger(__name__)
@@ -14,6 +14,30 @@ log = logging.getLogger(__name__)
 # other things) that you think in terms of resources and state
 # transitions, which map to HTTP verbs.
 db = MongoClient(os.environ['MONGODB_URI'])[os.environ['MONGODB_URI'].split('/')[-1]]
+
+
+class ShowResource(object):
+
+    def on_get(self, req, resp):
+        total = db.checks.count()
+        # db.checks.create_index(
+        #     ['computer', ASCENDING],
+        #     ['moderator', DESCENDING]
+        # )
+        false_positive = db.checks.find({
+            'computer': True,
+            'moderator': False,
+        }).count()
+        false_negative = db.checks.find({
+            'computer': False,
+            'moderator': True,
+        }).count()
+        resp.status = falcon.HTTP_404
+        resp.body = """
+            Total: %s
+            False Positive: %s
+            False Negative: %s
+        """ % (total, false_positive, false_negative)
 
 
 class CheckResource(object):
@@ -45,6 +69,7 @@ class CheckResource(object):
         product_id = req.get_param('product_id')
         computer = req.get_param('comp')
         moderator = req.get_param('moderator')
+        # db.checks.create_index('product_id')
         db.checks.replace_one({
             'product_id': product_id
         }, {'product_id': product_id,
@@ -71,7 +96,9 @@ app.req_options.auto_parse_form_urlencoded = True
 # Resources are represented by long-lived class instances
 add = AddResource()
 check = CheckResource()
+show = ShowResource()
 
 # things will handle all requests to the '/things' URL path
 app.add_route('/add', add)
 app.add_route('/check', check)
+app.add_route('/show', show)
