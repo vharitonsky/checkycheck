@@ -76,7 +76,7 @@ class CheckResource(object):
             'computer': computer, 
             'moderator': moderator,
             'page': clean_page,
-        })
+        }, upsert=True)
         resp.status = falcon.HTTP_200
         resp.body = 'OK'
 
