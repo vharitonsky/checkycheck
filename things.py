@@ -68,7 +68,7 @@ class CheckResource(object):
         clean_page = self.get_page(req)
         product_id = req.get_param('product_id')
         computer = req.get_param('comp')
-        moderator = req.get_param('moderator')
+        moderator = bool(req.get_param('moderator'))
         # db.checks.create_index('product_id')
         db.checks.replace_one({
             'product_id': product_id

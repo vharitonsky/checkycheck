@@ -12,28 +12,35 @@ window.onload = function () {
 
 function approve(el) {
   var image = el.parentNode.previousSibling;
-  var product_id = image.getAttribute('data-product-id');
-  var computer = image.getAttribute('data-computer');
-  var formData = new FormData();
-  formData.append('product_id', product_id);
-  formData.append('computer', !!computer);
-  formData.append('moderator', true);
+  var params = {product_id: image.getAttribute('data-product-id'),
+                computer: image.getAttribute('data-computer'),
+                moderator: true};
+  const searchParams = Object.keys(params).map(function (key){
+  return encodeURIComponent(key) + '=' + encodeURIComponent(params[key]);
+  }).join('&');
+
   fetch(window.location.href, {
     method: "POST",
-    body: formData
+    headers: {
+        'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'
+    },
+    body: searchParams
   });
 }
 
 function deny(el) {
   var image = el.parentNode.previousSibling;
-  var product_id = image.getAttribute('data-product-id');
-  var computer = image.getAttribute('data-computer');
-  var formData = new FormData();
-  formData.append('product_id', product_id);
-  formData.append('computer', !!computer);
-  formData.append('moderator', false);
+  var params = {product_id: image.getAttribute('data-product-id'),
+                computer: image.getAttribute('data-computer')};
+  const searchParams = Object.keys(params).map(function (key){
+    return encodeURIComponent(key) + '=' + encodeURIComponent(params[key]);
+  }).join('&');
+
   fetch(window.location.href, {
     method: "POST",
-    body: formData
+    headers: {
+        'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'
+    },
+    body: searchParams
   });
 }
