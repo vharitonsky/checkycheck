@@ -29,7 +29,7 @@ class ShowResource(object):
         clean_page = get_page(req)
         total = db.checks.find({
             'page': '^%s' % clean_page,
-        }).count()
+        }).count() or 1
         # db.checks.create_index(
         #     ['computer', ASCENDING],
         #     ['moderator', DESCENDING]
