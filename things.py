@@ -16,19 +16,29 @@ log = logging.getLogger(__name__)
 db = MongoClient(os.environ['MONGODB_URI'])[os.environ['MONGODB_URI'].split('/')[-1]]
 
 
+def get_page(req):
+    page = req.get_param('page')
+    clean_page = re.sub('[^a-zA-z]', '', page) + '.html'
+    log.info(clean_page)
+    return clean_page
+
+
 class ShowResource(object):
 
     def on_get(self, req, resp):
+        clean_page = get_page(req)
         total = db.checks.count()
         # db.checks.create_index(
         #     ['computer', ASCENDING],
         #     ['moderator', DESCENDING]
         # )
         false_positive = db.checks.find({
+            'page': '^%s' % clean_page,
             'computer': True,
             'moderator': False,
         }).count()
         false_negative = db.checks.find({
+            'page': '^%s' % clean_page,
             'computer': False,
             'moderator': False,
         }).count()
@@ -44,14 +54,8 @@ class ShowResource(object):
 
 class CheckResource(object):
 
-    def get_page(self, req):
-        page = req.get_param('page')
-        clean_page = re.sub('[^a-zA-z]', '', page) + '.html'
-        log.info(clean_page)
-        return clean_page
-
     def on_get(self, req, resp):
-        clean_page = self.get_page(req)
+        clean_page = get_page(req)
 
         if os.path.exists(clean_page):
             resp.status = falcon.HTTP_200
@@ -67,7 +71,7 @@ class CheckResource(object):
             resp.body = "Not found"
 
     def on_post(self, req, resp):
-        clean_page = self.get_page(req)
+        clean_page = get_page(req)
         product_id = req.get_param('product_id')
         computer = bool(req.get_param('computer'))
         moderator = bool(req.get_param('moderator'))
