@@ -26,7 +26,7 @@ def get_page(req):
 class ShowResource(object):
 
     def on_get(self, req, resp):
-        clean_page = get_page(req)
+        clean_page = get_page(req).replace('.html', '')
         total = db.checks.find({
             'page': {'$regex': re.compile('^%s' % clean_page)},
         }).count() or 1
