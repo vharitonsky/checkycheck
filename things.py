@@ -35,12 +35,12 @@ class ShowResource(object):
         #     ['moderator', DESCENDING]
         # )
         false_positive = db.checks.find({
-            'page': '^%s' % clean_page,
+            'page': {'$regex': re.compile('^%s' % clean_page)},
             'computer': True,
             'moderator': False,
         }).count()
         false_negative = db.checks.find({
-            'page': '^%s' % clean_page,
+            'page': {'$regex': re.compile('^%s' % clean_page)},
             'computer': False,
             'moderator': False,
         }).count()
